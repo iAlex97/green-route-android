@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GreenRoute</string>
+
+    <string name="clear">Clear</string>
 </resources>

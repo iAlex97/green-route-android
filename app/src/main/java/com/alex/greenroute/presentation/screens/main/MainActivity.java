@@ -8,6 +8,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
+import android.support.v7.widget.ActionMenuView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.HapticFeedbackConstants;
+import android.view.MenuItem;
 
 import com.alex.greenroute.R;
 import com.alex.greenroute.component.GreenApplication;
@@ -18,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mypopsy.widget.FloatingSearchView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +38,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnCameraMoveCanceledListener,
         GoogleMap.OnCameraIdleListener,
-        LocationListener {
+        LocationListener,
+        ActionMenuView.OnMenuItemClickListener {
+
+    @BindView(R.id.search)
+    FloatingSearchView mSearchView;
 
     private GoogleMap mMap;
 
@@ -48,6 +59,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         component.inject(this);
 
         setupMap();
+        setupSearchView();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mSearchView.isActivated()) {
+            mSearchView.setActivated(false);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -119,11 +140,100 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    /**
+     *     SEARCH VIEW CALLBACKS
+     */
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_clear:
+                mSearchView.setText(null);
+                mSearchView.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
+                break;
+        }
+        return true;
+    }
+
+    /**
+     *     SETUP METHODS
+     */
+
     private void setupMap() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    private void setupSearchView() {
+        mSearchView.setIcon(new DrawerArrowDrawable(this));
+
+        mSearchView.setOnIconClickListener(new FloatingSearchView.OnIconClickListener() {
+            @Override
+            public void onNavigationClick() {
+                // toggle
+                mSearchView.setActivated(!mSearchView.isActivated());
+            }
+        });
+
+        mSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
+            @Override
+            public void onSearchAction(CharSequence text) {
+                mSearchView.setActivated(false);
+            }
+        });
+
+        mSearchView.setOnMenuItemClickListener(this);
+
+        mSearchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence query, int start, int before, int count) {
+                showClearButton(query.length() > 0 && mSearchView.isActivated());
+                search(query.toString().trim());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mSearchView.setOnSearchFocusChangedListener(new FloatingSearchView.OnSearchFocusChangedListener() {
+            @Override
+            public void onFocusChanged(final boolean focused) {
+                boolean textEmpty = mSearchView.getText().length() == 0;
+
+                showClearButton(focused && !textEmpty);
+                if(!focused) showProgressBar(false);
+                mSearchView.showLogo(!focused && textEmpty);
+
+                /*if (focused) {
+                    mSearchView.showIcon(true);
+                } else {
+                    mSearchView.showIcon(shouldShowNavigationIcon());
+                }*/
+            }
+        });
+
+        mSearchView.setText(null);
+    }
+
+    private void showProgressBar(boolean show) {
+        mSearchView.getMenu().findItem(R.id.menu_progress).setVisible(show);
+    }
+
+    private void showClearButton(boolean show) {
+        mSearchView.getMenu().findItem(R.id.menu_clear).setVisible(show);
+    }
+
+    private void search(String query) {
+        showProgressBar(mSearchView.isActivated());
+        //mSearch.search(query);
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
