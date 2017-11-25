@@ -12,10 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alex.greenroute.R;
+import com.alex.greenroute.component.GreenApplication;
+import com.alex.greenroute.component.MiscUtils;
+import com.alex.greenroute.data.DataRepository;
+import com.alex.greenroute.presentation.screens.tutorial.AuthCallbacks;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +29,7 @@ import butterknife.OnClick;
 /**
  * Created by alex on 19.10.2015.
  */
-public class FragmentLogin extends Fragment {
+public class FragmentLogin extends Fragment implements AuthCallbacks {
     /**
      * The container view which has layout change animations turned on. In this sample, this view
      * is a {@link android.widget.LinearLayout}.
@@ -47,13 +52,14 @@ public class FragmentLogin extends Fragment {
     @BindView(R.id.buttonForgotPassword)
     Button resetPass;
 
+    @Inject
+    DataRepository dataRepository;
+
     AppCompatEditText confirmPassword;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_login, container, false);
-
-        return v;
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
@@ -61,6 +67,7 @@ public class FragmentLogin extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
+        GreenApplication.component().inject(this);
     }
 
     @OnClick(R.id.buttonLogin)
@@ -111,7 +118,7 @@ public class FragmentLogin extends Fragment {
             showErrorDialog(R.string.sign_up_email_error);
             return;
         }
-        //networkHandler.loginUser(eml, password.getText().toString(), this);
+        dataRepository.login(eml, password.getText().toString(), this);
     }
 
     private void signUp() {
@@ -134,7 +141,7 @@ public class FragmentLogin extends Fragment {
         }
 
         if(pwd.equals(pwdConf)) {
-            //networkHandler.registerUserAndLogin(eml, pwd, this);
+            dataRepository.register(eml, pwd, this);
         } else {
             showErrorDialog(R.string.sign_up_passwords_error);
         }
@@ -159,7 +166,7 @@ public class FragmentLogin extends Fragment {
         // adding this view is automatically animated.
         mContainerView.addView(confirmPasswordLayout, 2);
 
-        confirmPassword = (AppCompatEditText) confirmPasswordLayout.findViewById(R.id.text_confirm_password);
+        confirmPassword = confirmPasswordLayout.findViewById(R.id.text_confirm_password);
         /*textInputLayoutConfirmPassword = (TextInputLayout) confirmPasswordLayout.findViewById(R.id.text_input_layout_confirm_password);*/
 
         login.setText(R.string.login_register);
@@ -182,7 +189,7 @@ public class FragmentLogin extends Fragment {
     }
 
     private boolean isInvalidEmail(String strEmail) {
-        return false;
+        return (MiscUtils.readEmails(strEmail) == null);
     }
 
     private boolean validatePasswords(String password1, String password2) {
@@ -192,5 +199,24 @@ public class FragmentLogin extends Fragment {
         }
 
         return true;
+    }
+
+    @Override
+    public void onLoginSuccessful() {
+        getActivity().finish();
+    }
+
+    @Override
+    public void onRegisterSuccessful() {
+        logIn();
+    }
+
+    @Override
+    public void onError(String err) {
+        new MaterialDialog.Builder(getActivity())
+                .title("Error")
+                .content(err)
+                .positiveText("OK")
+                .show();
     }
 }

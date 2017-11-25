@@ -7,11 +7,27 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by alex on 27.09.2017.
  */
 
 public class MiscUtils {
+
+    private static final Pattern EMAIL_ADDRESS_PATTERN
+            = Pattern.compile(
+            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                    "\\@" +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                    "(" +
+                    "\\." +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                    ")+"
+    );
 
     /**
      * Checking for all possible internet providers
@@ -43,5 +59,17 @@ public class MiscUtils {
             }
         }
         return false;
+    }
+
+    public static List<String> readEmails(String text) {
+        List<String> toReturn = new ArrayList<>();
+
+        Matcher m = EMAIL_ADDRESS_PATTERN.matcher(text);
+
+        while (m.find()) {
+            toReturn.add(m.group().trim());
+        }
+
+        return (toReturn.size() > 0) ? toReturn : null;
     }
 }

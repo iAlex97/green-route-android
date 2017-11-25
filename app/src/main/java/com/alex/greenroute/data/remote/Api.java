@@ -19,19 +19,19 @@ public interface Api {
     String URL_PROD_BASE = "http://192.168.2.4/";
     String URL_PROD_TEST = URL_PROD_BASE/*"http://192.168.0.105/"*/;
 
-    @POST("/GreenRoute/user/register")
+    @POST("/GreenRoute/api/user/register")
     @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
     Call<ApiResponse> register(@Body RegisterBody body);
 
-    @POST("/GreenRoute/user/login")
+    @POST("/GreenRoute/api/user/login")
     @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
     Call<ApiResponse> login(@Body LoginBody body);
 
-    @POST("/GreenRoute/user/login")
+    @POST("/GreenRoute/api/user/login")
     @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
     Call<ApiResponse> login(@Query("email") String body, @Query("password") String password);
 
-    @POST("/GreenRoute/user/logout")
+    @POST("/GreenRoute/api/user/logout")
     @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
     Call<ApiResponse> logout();
 }
