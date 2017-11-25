@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by ialex on 15.02.2017.
@@ -25,6 +26,10 @@ public interface Api {
     @POST("/GreenRoute/user/login")
     @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
     Call<ApiResponse> login(@Body LoginBody body);
+
+    @POST("/GreenRoute/user/login")
+    @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
+    Call<ApiResponse> login(@Query("email") String body, @Query("password") String password);
 
     @POST("/GreenRoute/user/logout")
     @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})

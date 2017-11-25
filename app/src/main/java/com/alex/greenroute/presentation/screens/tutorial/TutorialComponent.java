@@ -1,4 +1,4 @@
-package com.alex.greenroute.presentation.screens.login;
+package com.alex.greenroute.presentation.screens.tutorial;
 
 import com.alex.greenroute.injection.AppComponent;
 import com.alex.greenroute.injection.PerActivity;
@@ -11,6 +11,6 @@ import dagger.Component;
 
 @PerActivity
 @Component(dependencies = AppComponent.class)
-public interface LoginComponent {
-    void inject(LoginActivity activity);
+public interface TutorialComponent {
+    void inject(TutorialActivity activity);
 }

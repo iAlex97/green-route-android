@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="login_fragment_margin">16dp</dimen>
+
+    <dimen name="welcome_blurb_min_height">96.0dip</dimen>
+    <dimen name="welcome_content">16.0sp</dimen>
+    <dimen name="welcome_heading">24.0sp</dimen>
+    <dimen name="welcome_heading_margin_bottom">12.0dip</dimen>
+    <dimen name="welcome_heading_margin_top">24.0dip</dimen>
+    <dimen name="welcome_images_margin_top">0.0dip</dimen>
+    <dimen name="welcome_images_size">360.0dip</dimen>
+    <dimen name="welcome_landscape_text_margin_right">24.0dip</dimen>
+    <dimen name="welcome_landscape_text_max_width">248.0dip</dimen>
+    <dimen name="welcome_text_margin">48.0dip</dimen>
+    <dimen name="welcome_text_margin_bottom">12.0dip</dimen>
+</resources>

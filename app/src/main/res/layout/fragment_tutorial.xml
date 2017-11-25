@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootLayoutTutorial">
+
+    <ImageView
+        android:id="@+id/tutorial_image"
+        android:clipChildren="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp" />
+
+    <TextView
+        android:textAppearance="@style/WelcomeHeadingAppearance"
+        android:id="@+id/heading"
+        android:text="Title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/welcome_text_margin"
+        android:layout_marginRight="@dimen/welcome_text_margin"
+        android:layout_marginBottom="@dimen/welcome_heading_margin_bottom"
+        android:layout_above="@+id/blurb" />
+
+    <TextView
+        android:textAppearance="@style/WelcomeContentAppearance"
+        android:id="@+id/blurb"
+        android:text="Content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/welcome_text_margin"
+        android:layout_marginRight="@dimen/welcome_text_margin"
+        android:layout_marginBottom="@dimen/welcome_text_margin_bottom"
+        android:minHeight="@dimen/welcome_blurb_min_height"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

@@ -4,7 +4,35 @@
     <string name="clear">Clear</string>
 
     <string name="login">Log In</string>
+    <string name="login_register">REGISTER</string>
+    <string name="login_back">BACK</string>
+
     <string name="register">Register</string>
+    <string name="password">Password</string>
+    <string name="button_use_now">Use Now</string>
+
+    <string name="hint_name">Name</string>
+    <string name="hint_email">Email</string>
+
+    <string name="forgot_password">Forgot your password?</string>
+
+    <string name="welcome_page_title_2">Scan on the go</string>
+    <string name="welcome_page_content_2">Easily scan business cards on the go even without an internet connection. Automatically sync between all of your devices.</string>
+    <string name="welcome_page_title_3">Group and search</string>
+    <string name="welcome_page_content_3">Create card groups and simply search for any of its details</string>
+    <string name="welcome_page_title_1">My BusinessCard</string>
+    <string name="welcome_page_content_1">Create your own, personalized business card and instantly share it with anyone either via NFC either as an image</string>
+
+    <string name="input_title_reset_password">Input email</string>
+    <string name="input_content_reset_password">Enter the email associated with your account and we\'ll send you the instructions to reset your password</string>
+
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_email">email</string>
+    <string name="sign_up_password">Password</string>
+    <string name="sign_up_confirm_password">Confirm Password</string>
+    <string name="sign_up_email_error">Invalid or empty email address. Please try again</string>
+    <string name="sign_up_password_empty">Please fill a password and try again</string>
+    <string name="sign_up_passwords_error">Passwords do not match. You can tick the grey eye to see them!</string>
 
     <string name="drawer_item_home">Home</string>
     <string name="drawer_item_settings">Settings</string>

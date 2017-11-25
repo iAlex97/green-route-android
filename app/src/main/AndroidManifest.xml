@@ -23,14 +23,15 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".presentation.screens.tutorial.TutorialActivity"
+            android:theme="@style/Theme.Tutorial" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3H4dcwmugL8X9YZ-lap1CcYA30yzhu1Y " />
-
-        <activity android:name=".presentation.screens.login.LoginActivity"></activity>
     </application>
 
 </manifest>

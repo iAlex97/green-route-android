@@ -19,7 +19,7 @@ import android.view.View;
 
 import com.alex.greenroute.R;
 import com.alex.greenroute.component.GreenApplication;
-import com.alex.greenroute.presentation.screens.login.LoginActivity;
+import com.alex.greenroute.presentation.screens.tutorial.TutorialActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setupSearchView();
         setupDrawer();
 
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, TutorialActivity.class));
     }
 
     @Override

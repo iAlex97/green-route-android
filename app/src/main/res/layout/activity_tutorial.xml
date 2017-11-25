@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.screens.tutorial.TutorialActivity"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootLayoutTutorial">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="50dp">
+    </android.support.v4.view.ViewPager>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#33ffffff"
+        android:layout_above="@+id/bottom_bar"
+        android:id="@+id/view" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:id="@+id/bottom_bar">
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:text="Skip"
+            android:id="@+id/button_skip"
+            android:background="?attr/selectableItemBackground"
+            android:textColor="@color/white" />
+
+        <com.merhold.extensiblepageindicator.ExtensiblePageIndicator
+            android:id="@+id/flexibleIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:indicatorRadius="4dp"
+            app:indicatorPadding="8dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"/>
+
+        <FrameLayout
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/button_next"
+                android:background="?attr/selectableItemBackground"
+                app:srcCompat="@drawable/chevron_right" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/button_use_now"
+                android:background="?attr/selectableItemBackground"
+                android:text="@string/button_use_now"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+        </FrameLayout>
+    </LinearLayout>
+</RelativeLayout>
