@@ -1,6 +1,7 @@
 package com.alex.greenroute.presentation.screens.main;
 
 import android.Manifest;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -14,9 +15,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.HapticFeedbackConstants;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.alex.greenroute.R;
 import com.alex.greenroute.component.GreenApplication;
+import com.alex.greenroute.presentation.screens.login.LoginActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,6 +27,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mypopsy.widget.FloatingSearchView;
 
 import butterknife.BindView;
@@ -46,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
 
+    private Drawer mDrawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setupMap();
         setupSearchView();
+        setupDrawer();
+
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Override
@@ -172,8 +190,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mSearchView.setOnIconClickListener(new FloatingSearchView.OnIconClickListener() {
             @Override
             public void onNavigationClick() {
-                // toggle
-                mSearchView.setActivated(!mSearchView.isActivated());
+                if (mSearchView.isActivated()) {
+                    mSearchView.setActivated(false);
+                } else {
+                    //pop the drawer
+                    mDrawer.openDrawer();
+                }
             }
         });
 
@@ -189,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mSearchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
@@ -246,5 +269,45 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             onLocationChanged(location);
         }
         locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
+    }
+
+    private void setupDrawer() {
+        // Create the AccountHeader
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile))
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
+
+        //if you want to update the items at a later time it is recommended to keep it in a variable
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_home);
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_settings);
+
+        //create the drawer and remember the `Drawer` result object
+        mDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withAccountHeader(headerResult)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings)
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // do something with the clicked item :D
+                        return true;
+                    }
+                })
+                .build();
     }
 }

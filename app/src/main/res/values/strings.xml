@@ -2,4 +2,10 @@
     <string name="app_name">GreenRoute</string>
 
     <string name="clear">Clear</string>
+
+    <string name="login">Log In</string>
+    <string name="register">Register</string>
+
+    <string name="drawer_item_home">Home</string>
+    <string name="drawer_item_settings">Settings</string>
 </resources>

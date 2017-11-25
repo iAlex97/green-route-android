@@ -27,6 +27,7 @@ configurations.all {
 }
 
 dependencies {
+    final SUPPORT_LIB_VERSION = '27.0.1'
     final LEAK_CANARY_VERSION = '1.5.4'
     final RETROFIT_VERSION = '2.3.0'
     final DAGGER_VERSION = '2.9'
@@ -37,19 +38,22 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:27.0.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    compile 'com.google.maps.android:android-maps-utils:0.5'
-    compile 'com.google.android.gms:play-services-maps:11.0.4'
+    //required support lib modules
+    compile "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
+    compile "com.android.support:recyclerview-v7:$SUPPORT_LIB_VERSION"
+    compile "com.android.support:support-annotations:$SUPPORT_LIB_VERSION"
+    compile "com.android.support:design:$SUPPORT_LIB_VERSION"
+    compile "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
 
-    compile 'com.jakewharton.timber:timber:4.6.0'
+
 
     compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
     compile "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
-    compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
-    compile 'com.github.renaudcerrato:FloatingSearchView:1.0.1'
+    compile("com.mikepenz:materialdrawer:6.0.2@aar") {
+        transitive = true
+    }
 
     compile "com.google.dagger:dagger:$DAGGER_VERSION"
     annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
@@ -63,5 +67,11 @@ dependencies {
     compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
     annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
 
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.maps.android:android-maps-utils:0.5'
+    compile 'com.google.android.gms:play-services-maps:11.0.4'
+    compile 'com.jakewharton.timber:timber:4.6.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    compile 'com.github.renaudcerrato:FloatingSearchView:1.0.1'
     testCompile 'junit:junit:4.12'
 }
