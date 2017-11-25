@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 
 import com.alex.greenroute.data.local.prefs.util.LongPreference;
 import com.alex.greenroute.data.local.prefs.util.StringPreference;
+import com.alex.greenroute.data.local.prefs.util.StringSetPreference;
+import com.alex.greenroute.data.remote.NetConstants;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -47,37 +49,9 @@ public class PrefsModule {
     }
 
     @Provides
-    @Named("ftp_username")
+    @Named("cookies")
     @Singleton
-    StringPreference provideFTPUsernamePreference(SharedPreferences preferences) {
-        return new StringPreference(preferences, "ftp_username", null);
-    }
-
-    @Provides
-    @Named("ftp_password")
-    @Singleton
-    StringPreference provideFTPPasswordData(SharedPreferences preferences) {
-        return new StringPreference(preferences, "ftp_password", null);
-    }
-
-    @Provides
-    @Named("temp_product")
-    @Singleton
-    StringPreference provideTempProduct(SharedPreferences preferences) {
-        return new StringPreference(preferences, "temp_product", null);
-    }
-
-    @Provides
-    @Named("temp_photos")
-    @Singleton
-    StringPreference provideTempPhotos(SharedPreferences preferences) {
-        return new StringPreference(preferences, "temp_photos", null);
-    }
-
-    @Provides
-    @Named("intent_timestamp")
-    @Singleton
-    LongPreference provideIntentTimestamp(SharedPreferences preferences) {
-        return new LongPreference(preferences, "intent_timestamp", -1);
+    StringSetPreference provideCookiesPreference(SharedPreferences preferences) {
+        return new StringSetPreference(preferences, NetConstants.SHARED_PREFS_COOKIES, null);
     }
 }

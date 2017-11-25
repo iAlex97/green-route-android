@@ -19,6 +19,7 @@ import android.view.View;
 
 import com.alex.greenroute.R;
 import com.alex.greenroute.component.GreenApplication;
+import com.alex.greenroute.data.local.prefs.PrefsRepository;
 import com.alex.greenroute.presentation.screens.tutorial.TutorialActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +40,8 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mypopsy.widget.FloatingSearchView;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
@@ -57,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @BindView(R.id.search)
     FloatingSearchView mSearchView;
 
+    @Inject
+    PrefsRepository prefsRepository;
+
     private GoogleMap mMap;
 
     private Drawer mDrawer;
@@ -73,11 +79,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
         component.inject(this);
 
+        if (prefsRepository.getPassword() == null || prefsRepository.getUsername() == null) {
+            startActivity(new Intent(this, TutorialActivity.class));
+            finish();
+            return;
+        }
+
         setupMap();
         setupSearchView();
         setupDrawer();
-
-        startActivity(new Intent(this, TutorialActivity.class));
     }
 
     @Override
@@ -277,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.header)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile))
+                        new ProfileDrawerItem().withName("Ionescu Alexandru").withEmail(prefsRepository.getUsername()).withIcon(getResources().getDrawable(R.drawable.profile))
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override

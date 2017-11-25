@@ -1,5 +1,8 @@
 package com.alex.greenroute.data.remote;
 
+import com.alex.greenroute.data.local.prefs.PrefsRepository;
+import com.alex.greenroute.data.remote.interceptors.AddCookieInterceptor;
+import com.alex.greenroute.data.remote.interceptors.ReceiveCookieInterceptor;
 import com.google.gson.Gson;
 import javax.inject.Singleton;
 
@@ -19,10 +22,13 @@ public class RemoteModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient() {
+    OkHttpClient provideOkHttpClient(AddCookieInterceptor addCookieInterceptor,
+                                     ReceiveCookieInterceptor receiveCookieInterceptor) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .addInterceptor(addCookieInterceptor)
                 .addInterceptor(loggingInterceptor)
                 .followRedirects(false)
                 .followSslRedirects(false)
@@ -38,5 +44,17 @@ public class RemoteModule {
                 .client(okHttpClient)
                 .build()
                 .create(Api.class);
+    }
+
+    @Provides
+    @Singleton
+    AddCookieInterceptor provideAddCookieInterceptor(PrefsRepository prefsRepository) {
+        return new AddCookieInterceptor(prefsRepository);
+    }
+
+    @Provides
+    @Singleton
+    ReceiveCookieInterceptor provideReceiveCookieInterceptor(PrefsRepository prefsRepository) {
+        return new ReceiveCookieInterceptor(prefsRepository);
     }
 }

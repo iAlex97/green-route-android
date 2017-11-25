@@ -1,5 +1,6 @@
 package com.alex.greenroute.presentation.screens.tutorial.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,8 @@ import com.alex.greenroute.R;
 import com.alex.greenroute.component.GreenApplication;
 import com.alex.greenroute.component.MiscUtils;
 import com.alex.greenroute.data.DataRepository;
+import com.alex.greenroute.data.local.prefs.PrefsRepository;
+import com.alex.greenroute.presentation.screens.main.MainActivity;
 import com.alex.greenroute.presentation.screens.tutorial.AuthCallbacks;
 
 import javax.inject.Inject;
@@ -54,6 +57,9 @@ public class FragmentLogin extends Fragment implements AuthCallbacks {
 
     @Inject
     DataRepository dataRepository;
+
+    @Inject
+    PrefsRepository prefsRepository;
 
     AppCompatEditText confirmPassword;
 
@@ -203,7 +209,10 @@ public class FragmentLogin extends Fragment implements AuthCallbacks {
 
     @Override
     public void onLoginSuccessful() {
-        getActivity().finish();
+        prefsRepository.setUsername(email.getText().toString());
+        prefsRepository.setPassword(password.getText().toString());
+
+        startActivity(new Intent(getContext(), MainActivity.class));
     }
 
     @Override
@@ -213,7 +222,7 @@ public class FragmentLogin extends Fragment implements AuthCallbacks {
 
     @Override
     public void onError(String err) {
-        new MaterialDialog.Builder(getActivity())
+        new MaterialDialog.Builder(getContext())
                 .title("Error")
                 .content(err)
                 .positiveText("OK")

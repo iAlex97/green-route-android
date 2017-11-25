@@ -1,6 +1,7 @@
 package com.alex.greenroute.presentation.screens.tutorial;
 
 import android.animation.ArgbEvaluator;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -19,6 +20,7 @@ import com.alex.greenroute.R;
 import com.alex.greenroute.component.GreenApplication;
 import com.alex.greenroute.data.DataRepository;
 import com.alex.greenroute.data.util.Constants;
+import com.alex.greenroute.presentation.screens.main.MainActivity;
 import com.alex.greenroute.presentation.screens.tutorial.fragments.FragmentInfo;
 import com.alex.greenroute.presentation.screens.tutorial.fragments.FragmentLogin;
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
@@ -67,6 +69,21 @@ public class TutorialActivity extends AppCompatActivity {
         component.inject(this);
 
         setupViewPager();
+    }
+
+    @OnClick({R.id.button_skip, R.id.button_use_now})
+    void onSkip() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.button_next)
+    void onNext() {
+        int currentItem = viewPager.getCurrentItem();
+        if(currentItem < numberOfViewPagerChildren) {
+            viewPager.setCurrentItem(currentItem + 1, true);
+        }
     }
 
     private void setupViewPager() {
