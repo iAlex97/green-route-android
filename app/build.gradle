@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.0"
+    buildToolsVersion "27.0.1"
     defaultConfig {
         applicationId "com.alex.greenroute"
         minSdkVersion 15
@@ -20,11 +20,29 @@ android {
 }
 
 dependencies {
+    final LEAK_CANARY_VERSION = '1.5.4'
+    final RETROFIT_VERSION = '2.3.0'
+    final DAGGER_VERSION = '2.9'
+    final PERMISSION_DISPATCHER = '3.0.1'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:27.+'
+    compile 'com.android.support:appcompat-v7:27.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
+    compile "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+
+    compile "com.google.dagger:dagger:$DAGGER_VERSION"
+    annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
+
+    compile "com.github.hotchemi:permissionsdispatcher:$PERMISSION_DISPATCHER"
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$PERMISSION_DISPATCHER"
+
     testCompile 'junit:junit:4.12'
 }
