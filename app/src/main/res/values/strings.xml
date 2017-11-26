@@ -3,6 +3,9 @@
 
     <string name="clear">Clear</string>
 
+    <string name="NO2">NO₂ (ppb)</string>
+    <string name="CO2">CO₂ (ppm)</string>
+
     <string name="login">Log In</string>
     <string name="login_register">REGISTER</string>
     <string name="login_back">BACK</string>

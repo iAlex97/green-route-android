@@ -36,7 +36,7 @@ public interface Api {
     @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
     Call<ApiResponse> logout();
 
-    @GET("/GreenRoute/api/pollution.json")
+    @GET("/GreenRoute/api/poldata.json")
     @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
     Call<PollutionResponse> getPollutonJson();
 }

@@ -20,11 +20,20 @@ import butterknife.ButterKnife;
 
 public class LiveActivity extends AppCompatActivity implements LiveCallback {
 
+    private final float MAX_NO2 = 1.3f;
+    private final float MAX_CO2 = 5000f;
+
     @BindView(R.id.meter1)
     MisMeter meter1;
 
+    @BindView(R.id.meter2)
+    MisMeter meter2;
+
     @BindView(R.id.shadow1)
     ShadowView shadow1;
+
+    @BindView(R.id.shadow2)
+    ShadowView shadow2;
 
     @BindColor(R.color.primary)
     int green;
@@ -73,10 +82,19 @@ public class LiveActivity extends AppCompatActivity implements LiveCallback {
 
     private void interpretData(PollutionResponse data) {
         float NO2 = (float) data.polluants.get("NO2").doubleValue();
+        float CO2 = (float) data.polluants.get("CO2").doubleValue();
 
-        int color = (Integer) new ArgbEvaluator().evaluate(NO2 / 1.2f, green, red);
-        shadow1.changeColor(color);
+        int color1 = (Integer) new ArgbEvaluator().evaluate(NO2 * 10 / MAX_NO2, green, red);
+        shadow1.changeColor(color1);
 
-        meter1.setProgress(NO2 * 100);
+        int color2 = (Integer) new ArgbEvaluator().evaluate(CO2 / MAX_CO2, green, red);
+        shadow2.changeColor(color2);
+
+        meter1.animate(NO2 / MAX_NO2);
+        meter1.setCurrentText(String.format("%.2f", NO2 * 1000));
+
+        meter2.animate(CO2 / MAX_CO2);
+        meter2.setCurrentText(String.format("%.2f", CO2));
+
     }
 }

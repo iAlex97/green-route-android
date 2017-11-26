@@ -29,6 +29,11 @@
                 android:layout_height="200dp" />
         </FrameLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="@string/NO2"/>
 
         <FrameLayout
             android:layout_width="200dp"
@@ -45,5 +50,11 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp" />
         </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="@string/CO2"/>
     </LinearLayout>
 </RelativeLayout>

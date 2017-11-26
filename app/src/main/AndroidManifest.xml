@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.Main">
         <activity android:name=".presentation.screens.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +33,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3H4dcwmugL8X9YZ-lap1CcYA30yzhu1Y " />
 
-        <activity android:name=".presentation.screens.live.LiveActivity"></activity>
+        <activity android:name=".presentation.screens.live.LiveActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
