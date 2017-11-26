@@ -22,12 +22,12 @@
 
     <string name="forgot_password">Forgot your password?</string>
 
-    <string name="welcome_page_title_2">Scan on the go</string>
-    <string name="welcome_page_content_2">Easily scan business cards on the go even without an internet connection. Automatically sync between all of your devices.</string>
-    <string name="welcome_page_title_3">Group and search</string>
-    <string name="welcome_page_content_3">Create card groups and simply search for any of its details</string>
-    <string name="welcome_page_title_1">My BusinessCard</string>
-    <string name="welcome_page_content_1">Create your own, personalized business card and instantly share it with anyone either via NFC either as an image</string>
+    <string name="welcome_page_title_2">Multiple routes</string>
+    <string name="welcome_page_content_2">You can always choose the best route tailored for you by getting multiple suggestions each time.</string>
+    <string name="welcome_page_title_3">Live data</string>
+    <string name="welcome_page_content_3">Continuously receive data from sensors all around you and be notified of environment issues.</string>
+    <string name="welcome_page_title_1">Cleanest route</string>
+    <string name="welcome_page_content_1">Determine the best route between 2 points based on real time data.</string>
 
     <string name="input_title_reset_password">Input email</string>
     <string name="input_content_reset_password">Enter the email associated with your account and we\'ll send you the instructions to reset your password</string>

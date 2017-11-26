@@ -350,9 +350,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .addDrawerItems(
                         item1,
                         new DividerDrawerItem(),
-                        item2,
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings)
+                        item2
                 )
+                .addStickyDrawerItems(
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings))
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {

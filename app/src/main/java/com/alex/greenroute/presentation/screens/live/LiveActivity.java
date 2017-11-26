@@ -91,6 +91,10 @@ public class LiveActivity extends AppCompatActivity implements LiveCallback {
     }
 
     private void interpretData(PollutionResponse data) {
+        if (data == null || data.polluants == null) {
+            return;
+        }
+
         float NO2 = (float) data.polluants.get("NO2").doubleValue();
         float CO2 = (float) data.polluants.get("CO2").doubleValue();
 

@@ -13,7 +13,6 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.alex.greenroute.R;
@@ -91,9 +90,9 @@ public class TutorialActivity extends AppCompatActivity {
         extensiblePageIndicator.initViewPager(viewPager);
 
         colors = new Integer[]{
-                ContextCompat.getColor(this, R.color.tutorial_color_1),
                 ContextCompat.getColor(this, R.color.tutorial_color_2),
                 ContextCompat.getColor(this, R.color.tutorial_color_3),
+                ContextCompat.getColor(this, R.color.tutorial_color_1),
                 ContextCompat.getColor(this, R.color.tutorial_color_4)};
 
         argbEvaluator = new ArgbEvaluator();
@@ -143,7 +142,7 @@ public class TutorialActivity extends AppCompatActivity {
                 case 0:
                     extras.putInt(Constants.EXTRAS_TITLE_REFERENCE, R.string.welcome_page_title_1);
                     extras.putInt(Constants.EXTRAS_CONTENT_REFERENCE, R.string.welcome_page_content_1);
-                    extras.putInt(Constants.EXTRAS_IMAGE_REFERENCE, R.drawable.tutorial_test1);
+                    extras.putInt(Constants.EXTRAS_IMAGE_REFERENCE, R.drawable.tutorial_test2);
 
                     fragment = new FragmentInfo();
                     fragment.setArguments(extras);
@@ -151,7 +150,7 @@ public class TutorialActivity extends AppCompatActivity {
                 case 1:
                     extras.putInt(Constants.EXTRAS_TITLE_REFERENCE, R.string.welcome_page_title_2);
                     extras.putInt(Constants.EXTRAS_CONTENT_REFERENCE, R.string.welcome_page_content_2);
-                    extras.putInt(Constants.EXTRAS_IMAGE_REFERENCE, R.drawable.tutorial_test2);
+                    extras.putInt(Constants.EXTRAS_IMAGE_REFERENCE, R.drawable.tutorial_test3);
 
                     fragment = new FragmentInfo();
                     fragment.setArguments(extras);
@@ -159,7 +158,7 @@ public class TutorialActivity extends AppCompatActivity {
                 case 2:
                     extras.putInt(Constants.EXTRAS_TITLE_REFERENCE, R.string.welcome_page_title_3);
                     extras.putInt(Constants.EXTRAS_CONTENT_REFERENCE, R.string.welcome_page_content_3);
-                    extras.putInt(Constants.EXTRAS_IMAGE_REFERENCE, R.drawable.tutorial_test3);
+                    extras.putInt(Constants.EXTRAS_IMAGE_REFERENCE, R.drawable.tutorial_test1);
 
                     fragment = new FragmentInfo();
                     fragment.setArguments(extras);
