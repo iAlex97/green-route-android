@@ -13,6 +13,7 @@ import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.ActionMenuView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,12 @@ import com.alex.greenroute.data.DataRepository;
 import com.alex.greenroute.data.local.prefs.PrefsRepository;
 import com.alex.greenroute.presentation.screens.live.LiveActivity;
 import com.alex.greenroute.presentation.screens.tutorial.TutorialActivity;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -96,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private Drawer mDrawer;
 
+    private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
         component.inject(this);
 
+
         if (prefsRepository.getPassword() == null || prefsRepository.getUsername() == null) {
             startActivity(new Intent(this, TutorialActivity.class));
             finish();
@@ -117,6 +127,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setupMap();
         setupSearchView();
         setupDrawer();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                Timber.i("Place: " + place.getName());
+
+                getDirectionsTo(place.getLatLng());
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                // TODO: Handle the error.
+                Timber.e( status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+            mSearchView.setActivated(false);
+        }
     }
 
     @Override
@@ -303,17 +332,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mSearchView.setOnSearchFocusChangedListener(new FloatingSearchView.OnSearchFocusChangedListener() {
             @Override
             public void onFocusChanged(final boolean focused) {
-                boolean textEmpty = mSearchView.getText().length() == 0;
-
-                showClearButton(focused && !textEmpty);
-                if(!focused) showProgressBar(false);
-                mSearchView.showLogo(!focused && textEmpty);
-
-                /*if (focused) {
-                    mSearchView.showIcon(true);
-                } else {
-                    mSearchView.showIcon(shouldShowNavigationIcon());
-                }*/
+                if (focused) {
+                    openPlacesPredicition();
+                }
             }
         });
 
@@ -387,27 +408,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDrawer.setOnDrawerItemClickListener(this);
     }
 
-
-
-
-
-    @OnClick(R.id.test)
-    void test() {
+    void openPlacesPredicition() {
         try {
-            testDirections();
-        } catch (Exception e) {
-            e.printStackTrace();
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                            .build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
         }
     }
 
-    private void clearMapWithoutMarkers() {
-        mMap.clear();
-        onNewMarkers(lastMarkers);
-    }
-
-    private void testDirections() throws Exception {
+    private void getDirectionsTo(LatLng to) {
         //clearMapWithoutMarkers();
+        if (lastMarkers == null || mLastPosition == null) {
+            return;
+        }
 
-        new GreenTrip(this, mMap, mLastPosition, new LatLng(44.85, 24.86667)).execute();
+        new GreenTrip(this, mMap, lastMarkers, mLastPosition, to).execute();
     }
 }
