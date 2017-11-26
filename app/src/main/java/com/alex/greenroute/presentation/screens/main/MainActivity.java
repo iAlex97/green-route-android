@@ -18,7 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.alex.greenroute.R;
+import com.alex.greenroute.component.CustomClusterRendering;
 import com.alex.greenroute.component.GreenApplication;
+import com.alex.greenroute.data.DataRepository;
 import com.alex.greenroute.data.local.prefs.PrefsRepository;
 import com.alex.greenroute.presentation.screens.live.LiveActivity;
 import com.alex.greenroute.presentation.screens.tutorial.TutorialActivity;
@@ -29,6 +31,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -41,10 +48,16 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mypopsy.widget.FloatingSearchView;
 
+import org.joda.time.DateTime;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import timber.log.Timber;
@@ -57,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleMap.OnCameraIdleListener,
         LocationListener,
         ActionMenuView.OnMenuItemClickListener,
-        Drawer.OnDrawerItemClickListener {
+        Drawer.OnDrawerItemClickListener,
+        StationMarkerListener {
 
     @BindView(R.id.search)
     FloatingSearchView mSearchView;
@@ -65,7 +79,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Inject
     PrefsRepository prefsRepository;
 
+    @Inject
+    DataRepository dataRepository;
+
     private GoogleMap mMap;
+
+    private ClusterManager<StationMarker> mClusterManager;
 
     private Drawer mDrawer;
 
@@ -137,7 +156,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap = googleMap;
 
+        setupClusterer();
         MainActivityPermissionsDispatcher.setupLocationProviderWithPermissionCheck(this);
+    }
+
+    @Override
+    public void onNewMarkers(List<StationMarker> markers) {
+        mClusterManager.addItems(markers);
     }
 
     /**
@@ -208,6 +233,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    private void setupClusterer() {
+        // Initialize the manager with the context and the map.
+        // (Activity extends context, so we can pass 'this' in the constructor.)
+        mClusterManager = new ClusterManager<>(this, mMap);
+        mClusterManager.setRenderer(new CustomClusterRendering(this, mMap, mClusterManager));
+
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setOnCameraIdleListener(mClusterManager);
+
+        test();
     }
 
     private void setupSearchView() {
@@ -338,4 +375,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mDrawer.setOnDrawerItemClickListener(this);
     }
+
+    private GeoApiContext getGeoContext() {
+        GeoApiContext geoApiContext = new GeoApiContext();
+        return geoApiContext.setQueryRateLimit(3)
+                .setApiKey(getString(R.string.directions_api_key))
+                .setConnectTimeout(1, TimeUnit.SECONDS)
+                .setReadTimeout(1, TimeUnit.SECONDS)
+                .setWriteTimeout(1, TimeUnit.SECONDS);
+    }
+
+    @OnClick(R.id.test)
+    void test() {
+        dataRepository.getAirQualityStations(this);
+    }
+
+    /*private void testDirections() {
+        DateTime now = new DateTime();
+        DirectionsResult result = DirectionsApi.newRequest(getGeoContext())
+                .mode(TravelMode.DRIVING)
+                .origin()
+                .destination(destination).departureTime(now)
+                .await();
+    }*/
 }

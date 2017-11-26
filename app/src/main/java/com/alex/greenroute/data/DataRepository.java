@@ -2,14 +2,20 @@ package com.alex.greenroute.data;
 
 import android.support.annotation.NonNull;
 
+import com.alex.greenroute.component.MiscUtils;
 import com.alex.greenroute.data.local.prefs.PrefsRepository;
 import com.alex.greenroute.data.remote.Api;
 import com.alex.greenroute.data.remote.body.LoginBody;
 import com.alex.greenroute.data.remote.body.RegisterBody;
+import com.alex.greenroute.data.remote.models.AirStation;
+import com.alex.greenroute.data.remote.response.AirQualityResponse;
 import com.alex.greenroute.data.remote.response.ApiResponse;
 import com.alex.greenroute.data.remote.response.PollutionResponse;
 import com.alex.greenroute.presentation.screens.live.LiveCallback;
+import com.alex.greenroute.presentation.screens.main.StationMarkerListener;
 import com.alex.greenroute.presentation.screens.tutorial.AuthCallbacks;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -109,6 +115,24 @@ public class DataRepository {
             @Override
             public void onFailure(Call<PollutionResponse> call, Throwable t) {
                 callback.onError();
+            }
+        });
+    }
+
+    public void getAirQualityStations(final StationMarkerListener listener) {
+        api.getAirQuality(44.42f, 26.07f, 100).enqueue(new Callback<List<AirStation>>() {
+            @Override
+            public void onResponse(Call<List<AirStation>> call, Response<List<AirStation>> response) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    return;
+                }
+
+                listener.onNewMarkers(MiscUtils.mapResponseToMarkers(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<List<AirStation>> call, Throwable t) {
+                Timber.d("onFailure");
             }
         });
     }

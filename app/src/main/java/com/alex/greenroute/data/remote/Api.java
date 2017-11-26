@@ -2,8 +2,12 @@ package com.alex.greenroute.data.remote;
 
 import com.alex.greenroute.data.remote.body.LoginBody;
 import com.alex.greenroute.data.remote.body.RegisterBody;
+import com.alex.greenroute.data.remote.models.AirStation;
+import com.alex.greenroute.data.remote.response.AirQualityResponse;
 import com.alex.greenroute.data.remote.response.ApiResponse;
 import com.alex.greenroute.data.remote.response.PollutionResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -39,4 +43,8 @@ public interface Api {
     @GET("/GreenRoute/api/poldata.json")
     @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
     Call<PollutionResponse> getPollutonJson();
+
+    @GET("/GreenRoute/api/aqi")
+    @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
+    Call<List<AirStation>> getAirQuality(@Query("lat") float lat, @Query("lng") float lng, @Query("radius") float radius);
 }

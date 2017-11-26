@@ -65,7 +65,17 @@ public class LiveActivity extends AppCompatActivity implements LiveCallback {
                 .appComponent(GreenApplication.component())
                 .build();
         component.inject(this);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mHandler.removeCallbacks(mRunnable);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         mHandler.post(mRunnable);
     }
 

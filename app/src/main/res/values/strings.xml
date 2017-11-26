@@ -1,4 +1,6 @@
 <resources>
+    <string name="directions_api_key">AIzaSyCl2iFx_yVcCpyc81NGX-y98SSZ5wRHMwI</string>
+
     <string name="app_name">GreenRoute</string>
 
     <string name="clear">Clear</string>

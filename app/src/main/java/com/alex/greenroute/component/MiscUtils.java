@@ -1,11 +1,19 @@
 package com.alex.greenroute.component;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
+
+import com.alex.greenroute.data.remote.models.AirStation;
+import com.alex.greenroute.presentation.screens.main.StationMarker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,5 +79,24 @@ public class MiscUtils {
         }
 
         return (toReturn.size() > 0) ? toReturn : null;
+    }
+
+    public static Bitmap makeTintedBitmap(Bitmap src, int color) {
+        Bitmap result = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
+        Canvas c = new Canvas(result);
+        Paint paint = new Paint();
+        paint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+        c.drawBitmap(src, 0, 0, paint);
+        return result;
+    }
+
+    public static List<StationMarker> mapResponseToMarkers(List<AirStation> in) {
+        List<StationMarker> markers = new ArrayList<>();
+
+        for (AirStation station : in) {
+            markers.add(new StationMarker(station.nume, station.aqi, station.lat, station.lng));
+        }
+
+        return markers;
     }
 }
