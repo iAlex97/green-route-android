@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.alex.greenroute.presentation.screens.live.LiveActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="8dp">
+
+            <com.alex.greenroute.views.ShadowView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/shadow1"/>
+
+            <com.github.yongjhih.mismeter.MisMeter
+                android:id="@+id/meter1"
+                android:layout_width="200dp"
+                android:layout_height="200dp" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp">
+
+            <com.alex.greenroute.views.ShadowView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/shadow2"/>
+
+            <com.github.yongjhih.mismeter.MisMeter
+                android:id="@+id/meter2"
+                android:layout_width="200dp"
+                android:layout_height="200dp" />
+        </FrameLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -7,6 +7,8 @@ import com.alex.greenroute.data.remote.Api;
 import com.alex.greenroute.data.remote.body.LoginBody;
 import com.alex.greenroute.data.remote.body.RegisterBody;
 import com.alex.greenroute.data.remote.response.ApiResponse;
+import com.alex.greenroute.data.remote.response.PollutionResponse;
+import com.alex.greenroute.presentation.screens.live.LiveCallback;
 import com.alex.greenroute.presentation.screens.tutorial.AuthCallbacks;
 
 import retrofit2.Call;
@@ -89,6 +91,24 @@ public class DataRepository {
             public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
                 Timber.e(t, "fail");
                 callbacks.onError(t.getMessage());
+            }
+        });
+    }
+
+    public void getLivePollutionJson(final LiveCallback callback) {
+        api.getPollutonJson().enqueue(new Callback<PollutionResponse>() {
+            @Override
+            public void onResponse(Call<PollutionResponse> call, Response<PollutionResponse> response) {
+                if (!response.isSuccessful()) {
+                    return;
+                }
+
+                callback.onNewLiveData(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<PollutionResponse> call, Throwable t) {
+                callback.onError();
             }
         });
     }

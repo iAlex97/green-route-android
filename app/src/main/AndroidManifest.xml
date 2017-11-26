@@ -22,8 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".presentation.screens.tutorial.TutorialActivity"
+        <activity
+            android:name=".presentation.screens.tutorial.TutorialActivity"
             android:theme="@style/Theme.Tutorial" />
 
         <meta-data
@@ -32,6 +32,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3H4dcwmugL8X9YZ-lap1CcYA30yzhu1Y " />
+
+        <activity android:name=".presentation.screens.live.LiveActivity"></activity>
     </application>
 
 </manifest>

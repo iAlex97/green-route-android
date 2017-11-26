@@ -34,6 +34,8 @@ dependencies {
     final PERMISSION_DISPATCHER = '3.0.1'
     final BUTTERKNIFE_VERSION = '8.8.1'
 
+    compile project(':mismeter');
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -54,10 +56,6 @@ dependencies {
         transitive = true
     }
 
-    compile 'com.merhold.extensiblepageindicator:extensiblepageindicator:1.0.1'
-    compile 'com.github.bumptech.glide:glide:4.3.1'
-    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
-
     compile "com.google.dagger:dagger:$DAGGER_VERSION"
     annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
 
@@ -70,8 +68,12 @@ dependencies {
     compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
     annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
 
+    compile 'com.merhold.extensiblepageindicator:extensiblepageindicator:1.0.1'
+    compile 'com.github.bumptech.glide:glide:4.3.1'
+    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.maps.android:android-maps-utils:0.5'
+    compile 'com.google.maps:google-maps-services:0.1.20'
     compile 'com.google.android.gms:play-services-maps:11.0.4'
     compile 'com.jakewharton.timber:timber:4.6.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'

@@ -20,6 +20,7 @@ import android.view.View;
 import com.alex.greenroute.R;
 import com.alex.greenroute.component.GreenApplication;
 import com.alex.greenroute.data.local.prefs.PrefsRepository;
+import com.alex.greenroute.presentation.screens.live.LiveActivity;
 import com.alex.greenroute.presentation.screens.tutorial.TutorialActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -55,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleMap.OnCameraMoveCanceledListener,
         GoogleMap.OnCameraIdleListener,
         LocationListener,
-        ActionMenuView.OnMenuItemClickListener {
+        ActionMenuView.OnMenuItemClickListener,
+        Drawer.OnDrawerItemClickListener {
 
     @BindView(R.id.search)
     FloatingSearchView mSearchView;
@@ -184,6 +186,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     /**
+     *     DRAWER CALLBACKS
+     */
+
+    @Override
+    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+        if (drawerItem.getIdentifier() == 2) {
+            startActivity(new Intent(this, LiveActivity.class));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      *     SETUP METHODS
      */
 
@@ -299,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //if you want to update the items at a later time it is recommended to keep it in a variable
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_home);
-        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_settings);
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Live");
 
         //create the drawer and remember the `Drawer` result object
         mDrawer = new DrawerBuilder()
@@ -319,5 +335,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 })
                 .build();
+
+        mDrawer.setOnDrawerItemClickListener(this);
     }
 }

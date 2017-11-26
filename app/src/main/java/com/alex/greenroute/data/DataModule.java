@@ -2,8 +2,10 @@ package com.alex.greenroute.data;
 
 import android.net.Uri;
 
+import com.alex.greenroute.component.PollutionSerializer;
 import com.alex.greenroute.data.local.prefs.PrefsRepository;
 import com.alex.greenroute.data.remote.Api;
+import com.alex.greenroute.data.remote.response.PollutionResponse;
 import com.alex.greenroute.data.util.UriSerialization;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,6 +26,7 @@ public class DataModule {
     Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Uri.class, new UriSerialization());
+        gsonBuilder.registerTypeAdapter(PollutionResponse.class, new PollutionSerializer());
         return gsonBuilder.create();
     }
 

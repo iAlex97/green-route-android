@@ -3,6 +3,7 @@ package com.alex.greenroute.data.remote;
 import com.alex.greenroute.data.remote.body.LoginBody;
 import com.alex.greenroute.data.remote.body.RegisterBody;
 import com.alex.greenroute.data.remote.response.ApiResponse;
+import com.alex.greenroute.data.remote.response.PollutionResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,7 +17,7 @@ import retrofit2.http.Query;
  */
 
 public interface Api {
-    String URL_PROD_BASE = "http://192.168.2.4/";
+    String URL_PROD_BASE = "http://192.168.2.5/";
     String URL_PROD_TEST = URL_PROD_BASE/*"http://192.168.0.105/"*/;
 
     @POST("/GreenRoute/api/user/register")
@@ -34,4 +35,8 @@ public interface Api {
     @POST("/GreenRoute/api/user/logout")
     @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
     Call<ApiResponse> logout();
+
+    @GET("/GreenRoute/api/pollution.json")
+    @Headers({"Cache-Control: no-store, no-cache", "User-Agent: android"})
+    Call<PollutionResponse> getPollutonJson();
 }
