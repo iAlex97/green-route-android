@@ -108,7 +108,7 @@ public class GreenTrip extends AsyncTask<Void, Void, DirectionsResult> {
             int color = (Integer) new ArgbEvaluator().evaluate((key - mincost) / mincost, colorGreen, colorRed);
             List<LatLng> decodedPath = PolyUtil.decode(results.routes[value].overviewPolyline.getEncodedPath());
 
-            mMap.addPolyline(new PolylineOptions().width(value * 7).color(color).addAll(decodedPath));
+            mMap.addPolyline(new PolylineOptions().width((value + 1) * 6).color(color).addAll(decodedPath));
         }
     }
 

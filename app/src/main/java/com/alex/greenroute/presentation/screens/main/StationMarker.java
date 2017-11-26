@@ -44,6 +44,6 @@ public class StationMarker implements ClusterItem {
 
     @Override
     public String getSnippet() {
-        return "Salam alecu";
+        return "AQI: " + aqi;
     }
 }

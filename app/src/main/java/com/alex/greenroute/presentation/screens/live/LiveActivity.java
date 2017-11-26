@@ -82,7 +82,7 @@ public class LiveActivity extends AppCompatActivity implements LiveCallback {
     @Override
     public void onNewLiveData(PollutionResponse data) {
         interpretData(data);
-        mHandler.postDelayed(mRunnable, 5000);
+        mHandler.postDelayed(mRunnable, 3000);
     }
 
     @Override

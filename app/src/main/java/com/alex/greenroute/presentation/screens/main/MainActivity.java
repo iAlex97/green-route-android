@@ -8,6 +8,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.ActionMenuView;
@@ -21,7 +22,6 @@ import android.view.View;
 import com.alex.greenroute.R;
 import com.alex.greenroute.component.CustomClusterRendering;
 import com.alex.greenroute.component.GreenApplication;
-import com.alex.greenroute.component.MiscUtils;
 import com.alex.greenroute.data.DataRepository;
 import com.alex.greenroute.data.local.prefs.PrefsRepository;
 import com.alex.greenroute.presentation.screens.live.LiveActivity;
@@ -29,7 +29,6 @@ import com.alex.greenroute.presentation.screens.tutorial.TutorialActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,13 +38,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.DirectionsApi;
-import com.google.maps.GeoApiContext;
-import com.google.maps.android.PolyUtil;
 import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.TravelMode;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -58,17 +51,12 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mypopsy.widget.FloatingSearchView;
 
-import org.joda.time.DateTime;
-
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import timber.log.Timber;
@@ -80,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleMap.OnCameraMoveCanceledListener,
         GoogleMap.OnCameraIdleListener,
         LocationListener,
-        ActionMenuView.OnMenuItemClickListener,
         Drawer.OnDrawerItemClickListener,
         StationMarkerListener {
 
@@ -236,21 +223,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     /**
-     *     SEARCH VIEW CALLBACKS
-     */
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_clear:
-                mSearchView.setText(null);
-                mSearchView.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
-                break;
-        }
-        return true;
-    }
-
-    /**
      *     DRAWER CALLBACKS
      */
 
@@ -309,8 +281,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        mSearchView.setOnMenuItemClickListener(this);
-
         mSearchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -319,8 +289,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onTextChanged(CharSequence query, int start, int before, int count) {
-                showClearButton(query.length() > 0 && mSearchView.isActivated());
-                search(query.toString().trim());
             }
 
             @Override
@@ -339,19 +307,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         mSearchView.setText(null);
-    }
-
-    private void showProgressBar(boolean show) {
-        mSearchView.getMenu().findItem(R.id.menu_progress).setVisible(show);
-    }
-
-    private void showClearButton(boolean show) {
-        mSearchView.getMenu().findItem(R.id.menu_clear).setVisible(show);
-    }
-
-    private void search(String query) {
-        showProgressBar(mSearchView.isActivated());
-        //mSearch.search(query);
+        mSearchView.setLogo(ContextCompat.getDrawable(this, R.drawable.logo));
+        mSearchView.showLogo(true);
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
@@ -421,11 +378,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private void clearMapsWithoutMarkers() {
+        mMap.clear();
+        mClusterManager.clearItems();
+        onNewMarkers(lastMarkers);
+    }
+
     private void getDirectionsTo(LatLng to) {
         //clearMapWithoutMarkers();
         if (lastMarkers == null || mLastPosition == null) {
             return;
         }
+
+        clearMapsWithoutMarkers();
 
         new GreenTrip(this, mMap, lastMarkers, mLastPosition, to).execute();
     }
