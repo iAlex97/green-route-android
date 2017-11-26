@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.alex.greenroute.data.remote.models.AirStation;
 import com.alex.greenroute.presentation.screens.main.StationMarker;
+import com.google.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,5 +99,9 @@ public class MiscUtils {
         }
 
         return markers;
+    }
+
+    public static LatLng getOtherLatLng(com.google.android.gms.maps.model.LatLng in) {
+        return new LatLng(in.latitude, in.longitude);
     }
 }

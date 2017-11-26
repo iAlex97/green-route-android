@@ -120,7 +120,7 @@ public class DataRepository {
     }
 
     public void getAirQualityStations(final StationMarkerListener listener) {
-        api.getAirQuality(44.42f, 26.07f, 100).enqueue(new Callback<List<AirStation>>() {
+        api.getAirQuality(44.42f, 26.07f, 500).enqueue(new Callback<List<AirStation>>() {
             @Override
             public void onResponse(Call<List<AirStation>> call, Response<List<AirStation>> response) {
                 if (!response.isSuccessful() || response.body() == null) {

@@ -20,6 +20,7 @@ import android.view.View;
 import com.alex.greenroute.R;
 import com.alex.greenroute.component.CustomClusterRendering;
 import com.alex.greenroute.component.GreenApplication;
+import com.alex.greenroute.component.MiscUtils;
 import com.alex.greenroute.data.DataRepository;
 import com.alex.greenroute.data.local.prefs.PrefsRepository;
 import com.alex.greenroute.presentation.screens.live.LiveActivity;
@@ -31,8 +32,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
@@ -51,6 +54,7 @@ import com.mypopsy.widget.FloatingSearchView;
 import org.joda.time.DateTime;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -81,6 +85,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Inject
     DataRepository dataRepository;
+
+    private List<StationMarker> lastMarkers;
+
+    private LatLng mLastPosition;
 
     private GoogleMap mMap;
 
@@ -162,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onNewMarkers(List<StationMarker> markers) {
+        this.lastMarkers = markers;
         mClusterManager.addItems(markers);
     }
 
@@ -173,6 +182,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
+
+        mLastPosition = latLng;
 
         mMap.addMarker(new MarkerOptions().position(latLng));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -244,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(mClusterManager);
         mMap.setOnCameraIdleListener(mClusterManager);
 
-        test();
+        dataRepository.getAirQualityStations(this);
     }
 
     private void setupSearchView() {
@@ -376,26 +387,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDrawer.setOnDrawerItemClickListener(this);
     }
 
-    private GeoApiContext getGeoContext() {
-        GeoApiContext geoApiContext = new GeoApiContext();
-        return geoApiContext.setQueryRateLimit(3)
-                .setApiKey(getString(R.string.directions_api_key))
-                .setConnectTimeout(1, TimeUnit.SECONDS)
-                .setReadTimeout(1, TimeUnit.SECONDS)
-                .setWriteTimeout(1, TimeUnit.SECONDS);
-    }
+
+
+
 
     @OnClick(R.id.test)
     void test() {
-        dataRepository.getAirQualityStations(this);
+        try {
+            testDirections();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    /*private void testDirections() {
-        DateTime now = new DateTime();
-        DirectionsResult result = DirectionsApi.newRequest(getGeoContext())
-                .mode(TravelMode.DRIVING)
-                .origin()
-                .destination(destination).departureTime(now)
-                .await();
-    }*/
+    private void clearMapWithoutMarkers() {
+        mMap.clear();
+        onNewMarkers(lastMarkers);
+    }
+
+    private void testDirections() throws Exception {
+        //clearMapWithoutMarkers();
+
+        new GreenTrip(this, mMap, mLastPosition, new LatLng(44.85, 24.86667)).execute();
+    }
 }
