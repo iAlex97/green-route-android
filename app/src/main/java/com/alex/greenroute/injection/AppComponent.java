@@ -8,6 +8,8 @@ import com.alex.greenroute.data.DataRepository;
 import com.alex.greenroute.data.local.prefs.PrefsModule;
 import com.alex.greenroute.data.local.prefs.PrefsRepository;
 import com.alex.greenroute.data.remote.RemoteModule;
+import com.alex.greenroute.presentation.screens.settings.SettingsActivity;
+import com.alex.greenroute.presentation.screens.tutorial.TutorialActivity;
 import com.alex.greenroute.presentation.screens.tutorial.fragments.FragmentLogin;
 
 import javax.inject.Singleton;
@@ -23,6 +25,8 @@ public interface AppComponent {
     void inject(PrefsRepository prefsRepository);
 
     void inject(FragmentLogin fragmentLogin);
+
+    void inject(SettingsActivity activity);
 
     PrefsRepository prefsRepository();
 

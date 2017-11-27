@@ -4,6 +4,7 @@
 
     <string name="app_name">GreenRoute</string>
 
+    <string name="ip">XXX.XXX.XXX.XXX</string>
     <string name="clear">Clear</string>
 
     <string name="NO2">NO₂ (ppb)</string>

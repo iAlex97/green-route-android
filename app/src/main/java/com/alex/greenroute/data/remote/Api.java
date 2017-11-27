@@ -21,7 +21,7 @@ import retrofit2.http.Query;
  */
 
 public interface Api {
-    String URL_PROD_BASE = "http://192.168.2.5/";
+    String URL_PROD_BASE = "http://defcon33.ddns.net/";
     String URL_PROD_TEST = URL_PROD_BASE/*"http://192.168.0.105/"*/;
 
     @POST("/GreenRoute/api/user/register")

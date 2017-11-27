@@ -25,6 +25,7 @@ import com.alex.greenroute.component.GreenApplication;
 import com.alex.greenroute.data.DataRepository;
 import com.alex.greenroute.data.local.prefs.PrefsRepository;
 import com.alex.greenroute.presentation.screens.live.LiveActivity;
+import com.alex.greenroute.presentation.screens.settings.SettingsActivity;
 import com.alex.greenroute.presentation.screens.tutorial.TutorialActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -231,6 +232,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (drawerItem.getIdentifier() == 2) {
             startActivity(new Intent(this, LiveActivity.class));
             return true;
+        } else if (drawerItem.getIdentifier() == 3) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
         } else {
             return false;
         }
@@ -353,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         item2
                 )
                 .addStickyDrawerItems(
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings))
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIdentifier(3))
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
